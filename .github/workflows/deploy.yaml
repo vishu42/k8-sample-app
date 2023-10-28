@@ -17,7 +17,7 @@ jobs:
         with:
           inlineScript: |
             export CI_SP_TENANT_ID=1c721276-b529-4426-8bd0-29192fb2b12a
-            az login --service-principal -u a0765142-8278-4b1d-87b0-aeaf93d5e41d -p ${{ secrets.AZ_SP_SECRET }} --tenant ${CI_SP_TENANT_ID}
+            az login --service-principal -u 68496c1f-b152-4ea0-8175-24dc33a9a00e -p ${{ secrets.AZ_SP_SECRET }} --tenant ${CI_SP_TENANT_ID}
             az account set --subscription ad03fadb-090b-4df8-9d11-d4588c0d116f
             az aks get-credentials --resource-group cluster01-aks-rg --name cluster01-aks-cluster --admin
       - uses: Azure/k8s-deploy@v4
