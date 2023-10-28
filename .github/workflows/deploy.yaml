@@ -1,0 +1,29 @@
+name: Deploy to k8s
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get kubeconfig
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            export CI_SP_TENANT_ID=1c721276-b529-4426-8bd0-29192fb2b12a
+            az login --service-principal -u a0765142-8278-4b1d-87b0-aeaf93d5e41d -p ${{ secrets.AZ_SP_SECRET }} --tenant ${CI_SP_TENANT_ID}
+            az account set --subscription ad03fadb-090b-4df8-9d11-d4588c0d116f
+            az aks get-credentials --resource-group cluster01-aks-rg --name cluster01-aks-cluster --admin
+      - uses: Azure/k8s-deploy@v4
+        with:
+            namespace: 'app'
+            manifests: |
+              http-echo-deployment.yaml
+
+           
